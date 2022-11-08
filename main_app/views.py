@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Animals
 
 # Define the home view
@@ -20,3 +20,13 @@ def animals_detail(request, animal_id):
 class AnimalCreate(CreateView):
   model = Animals
   fields = '__all__'
+  success_url = '/animals/'
+
+class AnimalUpdate(UpdateView):
+  model = Animals
+  # Let's disallow the renaming of a cat by excluding the name field!
+  fields = ['breed', 'description', 'age']
+
+class AnimalDelete(DeleteView):
+  model = Animals
+  success_url = '/animals/'
