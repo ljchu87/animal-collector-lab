@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Animals
+from .forms import FeedingForm
 
 # Define the home view
 def home(request):
@@ -15,7 +16,16 @@ def animals_index(request):
 
 def animals_detail(request, animal_id):
   animal = Animals.objects.get(id=animal_id)
-  return render(request, 'animals/detail.html', { 'animal': animal })
+  feeding_form = FeedingForm()
+  return render(request, 'animals/detail.html', { 'animal': animal, 'feeding_form': feeding_form })
+
+def add_feeding(request, animal_id):
+  form = FeedingForm(request.POST)
+  if form.is_valid():
+    new_feeding = form.save(commit=False)
+    new_feeding.animal_id = animal_id
+    new_feeding.save()
+  return redirect('animals_detail', animal_id=animal_id)
 
 class AnimalCreate(CreateView):
   model = Animals
@@ -24,7 +34,6 @@ class AnimalCreate(CreateView):
 
 class AnimalUpdate(UpdateView):
   model = Animals
-  # Let's disallow the renaming of a cat by excluding the name field!
   fields = ['breed', 'description', 'age']
 
 class AnimalDelete(DeleteView):
