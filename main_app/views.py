@@ -17,8 +17,9 @@ def animals_index(request):
 
 def animals_detail(request, animal_id):
   animal = Animals.objects.get(id=animal_id)
+  toys_animal_doesnt_have = Toy.objects.exclude(id__in = animal.toys.all().values_list('id'))
   feeding_form = FeedingForm()
-  return render(request, 'animals/detail.html', { 'animal': animal, 'feeding_form': feeding_form })
+  return render(request, 'animals/detail.html', { 'animal': animal, 'feeding_form': feeding_form, 'toys': toys_animal_doesnt_have })
 
 def add_feeding(request, animal_id):
   form = FeedingForm(request.POST)
@@ -28,9 +29,13 @@ def add_feeding(request, animal_id):
     new_feeding.save()
   return redirect('animals_detail', animal_id=animal_id)
 
+def assoc_toy(request, animal_id, toy_id):
+  Animals.objects.get(id=animal_id).toys.add(toy_id)
+  return redirect('animals_detail', animal_id=animal_id)
+
 class AnimalCreate(CreateView):
   model = Animals
-  fields = '__all__'
+  fields = ['name', 'breed', 'description', 'age']
   success_url = '/animals/'
 
 class AnimalUpdate(UpdateView):
@@ -50,7 +55,7 @@ class ToyList(ListView):
 
 class ToyDetail(DetailView):
   model = Toy
-  
+
 class ToyUpdate(UpdateView):
   model = Toy
   fields = ['name', 'color']
