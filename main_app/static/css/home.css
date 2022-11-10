@@ -27,10 +27,6 @@ main > section {
   width: 700px;
 }
 
-.cat-container {
-  width: 80%;
-}
-
 .login {
   display: flex;
   flex-direction: column;
