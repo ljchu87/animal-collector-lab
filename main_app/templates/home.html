@@ -7,15 +7,12 @@
 
 {% block content %}
 
-<section class="logo-container">
+<section class='logo-container'>
+  <img src="{% static 'images/raccoon.svg' %}" alt="A horse">
   <img 
-    src="{% static 'images/horse.svg' %}" 
-    alt="Horse Animal Collector" 
-  >
-  <img 
-    src="{% static 'images/logo1.svg' %}" 
+    src="{% static 'images/animal-collector-logo-1.svg' %}" 
     alt="Text reads: Animal Collector"
-  >
+    >
 </section>
 
 {% if not user.is_authenticated %}
@@ -29,5 +26,4 @@
     </form>
   </section>
 {% endif %}
-
 {% endblock %}

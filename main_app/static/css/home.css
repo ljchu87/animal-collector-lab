@@ -20,11 +20,11 @@ main > section {
 }
 
 .logo-container {
-  max-width: 275px;
+  max-width: 375px;
 }
 
-.logo-container > img {
-  width: 700px;
+.animal-container {
+  width: 80%;
 }
 
 .login {
